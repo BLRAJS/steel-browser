@@ -1,0 +1,41 @@
+# railway.toml
+
+# Configuration for the 'api' service
+[[services]]
+  # Settings for the build process
+  [services.build]
+  # Use the Dockerfile builder
+  builder = "dockerfile"
+  # Path to the Dockerfile relative to the repository root
+  dockerfilePath = "api/Dockerfile"
+  # Set the build context to the repository root (important for COPY commands)
+  dockerContext = "."
+
+  # Settings for the deployment process
+  [services.deploy]
+  # No custom start command needed - Dockerfile's ENTRYPOINT will be used
+  # startCommand = ""
+  # Healthcheck endpoint for the API
+  healthcheckPath = "/v1/health"
+  healthcheckTimeout = 300
+
+# Configuration for the 'ui' service
+[[services]]
+  # Settings for the build process
+  [services.build]
+  # Use the Dockerfile builder
+  builder = "dockerfile"
+  # Path to the Dockerfile relative to the repository root
+  dockerfilePath = "ui/Dockerfile"
+  # Set the build context to the repository root (important for COPY commands)
+  dockerContext = "."
+  # Note: Build arguments like VITE_API_URL are typically passed via
+  # Railway Environment Variables, which should be available during build.
+
+  # Settings for the deployment process
+  [services.deploy]
+  # No custom start command needed - Dockerfile's CMD will be used
+  # startCommand = ""
+  # Basic healthcheck for the UI (assuming it serves on root)
+  healthcheckPath = "/"
+  healthcheckTimeout = 300
